@@ -6,7 +6,7 @@ from uagents import Model
 from uagents.envelope import Envelope
 from uagents.query import query
 
-AGENT_ADDRESS = "agent1q0hqakx8mdhsv7sydtzh38gzsx8td035dcdkp44yt4t4tsya8y6y2wl79rj"
+AGENT_ADDRESS = "agent1qw9agk69kw9t57lpgasq9uewx3ns9qtlfju3pzphl4x2u39yfelp7v057ev"
 
 
 class TestRequest(Model):
@@ -30,7 +30,7 @@ def read_root():
     return "Hello from the Agent controller"
 
 
-@app.post("/search")
+@app.post("/plan")
 async def make_agent_call(req: Request):
     print("YESSIR")
     model = TestRequest.parse_obj(await req.json())
