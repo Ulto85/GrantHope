@@ -30,7 +30,7 @@ def read_root():
     return "Hello from the Agent controller"
 
 
-@app.post("/endpoint")
+@app.post("/search")
 async def make_agent_call(req: Request):
     print("YESSIR")
     model = TestRequest.parse_obj(await req.json())

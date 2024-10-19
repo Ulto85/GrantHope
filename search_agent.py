@@ -1,17 +1,19 @@
-tavily_api_key="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"
 
 from uagents import Agent, Context, Model
 
 import requests
 from tavily import TavilyClient
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
+tavily_api_key=os.getenv("TAVILY_API_KEY")
 
 def tavily_search(query, API_KEY):
     """Perform a search using the Tavily Search API and return results."""
     tavily_client = TavilyClient(api_key=API_KEY)
     return tavily_client.search(query)
-tavily_api_key="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"
-print(tavily_search("is cs61a a hard class",tavily_api_key))
+
 class TestRequest(Model):
     message: str
 
@@ -24,7 +26,7 @@ agent = Agent(
     name="SearcherAgent",
     seed="tavily-searcher",
     port=8001,
-    endpoint="http://localhost:8001/submit",
+    endpoint="http://localhost:8001/search",
 )
 
 
@@ -39,9 +41,20 @@ async def startup(ctx: Context):
 async def query_handler(ctx: Context, sender: str, _query: TestRequest):
     ctx.logger.info("Query received")
     try:
+      
         reponse_text = [x['title'] for x in tavily_search(_query.message,tavily_api_key)['results']]
-        print(reponse_text)
+      
         await ctx.send(sender, Response(urls=reponse_text))
-    except Exception:
+    except Exception as e:
+  
         await ctx.send(sender, Response(urls=["fail"]))
 agent.run()
+# @agent.on_rest_get("/rest/search",model=TestRequest, replies={Response})
+# async def query_handler(ctx: Context, sender: str, _query: TestRequest):
+#     ctx.logger.info("Query received")
+#     try:
+#         reponse_text = [x['title'] for x in tavily_search(_query.message,tavily_api_key)['results']]
+#         return Response(urls=reponse_text)
+#     except Exception:
+#         return Response(urls=["fail"])
+# agent.run()
