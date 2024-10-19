@@ -53,7 +53,7 @@ async def startup(ctx: Context):
 async def query_handler(ctx= Context, req= TestRequest):
     ctx.logger.info("Query received")
     try:
-        reponse_text = [x['title'] for x in tavily_search(req.message,tavily_api_key)['results']]
+        reponse_text = [x['url'] for x in tavily_search(req.message,tavily_api_key)['results']]
         return Response(urls=reponse_text)
     except Exception:
         return Response(urls=["fail"])

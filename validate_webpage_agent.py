@@ -20,9 +20,10 @@ import re
 import ast
 
 def find_and_eval_dicts(text):
-   pattern = r'\{([^\{\}]*)\}'
-   matches = re.findall(pattern, text)
-   return [ast.literal_eval(f'{{{match}}}') for match in matches]
+    pattern = r'\{([^\{\}]*(?:\{[^\{\}]*\}[^\{\}]*)*)\}'
+    matches = re.findall(pattern, text, re.DOTALL)  # re.DOTALL makes . match newlines
+    return [ast.literal_eval(f'{{{match}}}') for match in matches]
+
 gemini_api_key=os.getenv("GEMINI_API_KEY")
 def get_webpage_content(link):
     resp=requests.get(link) 
@@ -49,6 +50,9 @@ class TestRequest(Model):
 class Response(Model):
     text:str
     isValid:bool
+    approximateRange:str
+    deadline:str
+
 
 
 
@@ -85,11 +89,12 @@ async def query_handler(ctx: Context, req: TestRequest):
     try:
         webcontext = get_webpage_content(req.link)
  
-        response_text = model.generate_content(f"RETURN YOUR ANSWER AS A DICTIONARY {{'is_applicable':(boolean: (TRUE/FALSE)), 'reasoning':why you think that way}}. Does this grant: {webcontext} \n sound applicable for my specific NGO usecase: {req.context}").text
-        print(response_text)
+        response_text = model.generate_content(f"RETURN YOUR ANSWER AS A DICTIONARY {{'is_applicable':(boolean: (TRUE/FALSE)), 'reasoning':why you think that way,'approximateRange':what the range is (if you don't know take an estimate),'deadline':try to get the deadline for the next open cycle and say instead like Opens xyz as opposed to Closes xyz}}. Does this grant: {webcontext} \n sound applicable for my specific NGO usecase: {req.context}").text
+        
         response_dict= find_and_eval_dicts(response_text)[0]
-        return Response(text=response_dict["reasoning"],isValid=response_dict["is_applicable"])
+
+        return Response(text=response_dict["reasoning"],isValid=response_dict["is_applicable"],approximateRange=response_dict["approximateRange"],deadline=response_dict["deadline"])
     except Exception as e:
         print(e)
-        return Response(text="fail",isValid=False)
+        return Response(text="fail",isValid=False,approximateRange='',deadline='')
 agent.run()
