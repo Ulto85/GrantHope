@@ -57,4 +57,12 @@ async def query_handler(ctx= Context, req= TestRequest):
         return Response(urls=reponse_text)
     except Exception:
         return Response(urls=["fail"])
+@agent.on_rest_post("/get_content",TestRequest, Response)
+async def query_handler(ctx= Context, req= TestRequest):
+    ctx.logger.info("Query received")
+    try:
+        reponse_text = [x['content'] for x in tavily_search(req.message,tavily_api_key)['results']]
+        return Response(urls=reponse_text)
+    except Exception:
+        return Response(urls=["fail"])
 agent.run()
