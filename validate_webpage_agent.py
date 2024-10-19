@@ -55,7 +55,7 @@ class Response(Model):
 
 agent = Agent(
     name="WebPageEvalAgent",
-    seed="gemini-planner",
+    seed="web-agent",
     port=8001,
     endpoint="http://localhost:8001/plan",
 )
