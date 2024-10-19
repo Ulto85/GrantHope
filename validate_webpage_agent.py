@@ -30,7 +30,6 @@ def get_webpage_content(link):
       
     answer= ''
     if resp.status_code==200: 
-        print("Successfully opened the web page") 
     
         soup=BeautifulSoup(resp.text,'html.parser')    
         l=soup.findAll("div")
@@ -42,7 +41,7 @@ def get_webpage_content(link):
         return 'error'
 
 
-class TestRequest(Model):
+class Request(Model):
     link: str
     context:str
 
@@ -83,8 +82,8 @@ async def startup(ctx: Context):
 #     except Exception:
 #         await ctx.send(sender, Response(prompts=["fail"]))
 # agent.run()
-@agent.on_rest_post("/validate",TestRequest, Response)
-async def query_handler(ctx: Context, req: TestRequest):
+@agent.on_rest_post("/validate",Request, Response)
+async def query_handler(ctx: Context, req: Request):
     ctx.logger.info("Query received")
     try:
         webcontext = get_webpage_content(req.link)
@@ -95,6 +94,6 @@ async def query_handler(ctx: Context, req: TestRequest):
 
         return Response(text=response_dict["reasoning"],isValid=response_dict["is_applicable"],approximateRange=response_dict["approximateRange"],deadline=response_dict["deadline"])
     except Exception as e:
-        print(e)
+      
         return Response(text="fail",isValid=False,approximateRange='',deadline='')
 agent.run()

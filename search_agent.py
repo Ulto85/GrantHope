@@ -14,7 +14,7 @@ def tavily_search(query, API_KEY):
     tavily_client = TavilyClient(api_key=API_KEY)
     return tavily_client.search(query)
 
-class TestRequest(Model):
+class Request(Model):
     message: str
 
 
@@ -49,16 +49,16 @@ async def startup(ctx: Context):
   
 #         await ctx.send(sender, Response(urls=["fail"]))
 # agent.run()
-@agent.on_rest_post("/search",TestRequest, Response)
-async def query_handler(ctx= Context, req= TestRequest):
+@agent.on_rest_post("/search",Request, Response)
+async def query_handler(ctx= Context, req= Request):
     ctx.logger.info("Query received")
     try:
         reponse_text = [x['url'] for x in tavily_search(req.message,tavily_api_key)['results']]
         return Response(urls=reponse_text)
     except Exception:
         return Response(urls=["fail"])
-@agent.on_rest_post("/get_content",TestRequest, Response)
-async def query_handler(ctx= Context, req= TestRequest):
+@agent.on_rest_post("/get_content",Request, Response)
+async def query_handler(ctx= Context, req= Request):
     ctx.logger.info("Query received")
     try:
         reponse_text = [x['content'] for x in tavily_search(req.message,tavily_api_key)['results']]
