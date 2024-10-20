@@ -32,7 +32,7 @@ const SAMPLE_GRANTS = [
     }
    ];
 
-// Set this to true for demo mode
+
 const USE_SAMPLE_DATA = false;
 
 export default function Dashboard() {
