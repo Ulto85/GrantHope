@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, ExternalLink } from "lucide-react";
 
+import { Heart, Building2, Search, ExternalLink, Loader2 } from 'lucide-react';
 // Sample data for demo purposes
 const SAMPLE_GRANTS = [
   {
@@ -30,7 +30,7 @@ const SAMPLE_GRANTS = [
 ];
 
 // Set this to true for demo mode
-const USE_SAMPLE_DATA = false;
+const USE_SAMPLE_DATA = true;
 
 export default function Dashboard() {
   const router = useRouter();
@@ -129,75 +129,117 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">GrantHope Dashboard</h1>
-          <Button variant="outline" onClick={handleLogout}>Logout</Button>
+    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 p-8">
+    <div className="max-w-6xl mx-auto">
+      <nav className="flex justify-between items-center mb-12">
+        <div className="flex items-center gap-3">
+          <Heart className="text-blue-600 h-8 w-8" />
+          <h1 className="text-3xl font-bold">Grant<span className="text-blue-600">Hope</span></h1>
         </div>
-        
-        <Card className="mb-8">
+        <Button variant="outline" onClick={handleLogout}>Logout</Button>
+      </nav>
+   
+      <div className="grid lg:grid-cols-3 gap-8">
+        <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Update Organization Info & Find Grants</CardTitle>
+            <div className="flex items-center gap-2">
+              <Building2 className="text-blue-600 h-5 w-5" />
+              <CardTitle>Organization Profile</CardTitle>
+            </div>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 placeholder="NGO Name"
+                className="h-12"
                 value={ngoData.name}
                 onChange={(e) => setNgoData({...ngoData, name: e.target.value})}
               />
               <Input
                 placeholder="Disease Focus"
+                className="h-12"
                 value={ngoData.disease}
                 onChange={(e) => setNgoData({...ngoData, disease: e.target.value})}
               />
               <Textarea
                 placeholder="NGO Mission"
+                className="min-h-[100px]"
                 value={ngoData.mission}
                 onChange={(e) => setNgoData({...ngoData, mission: e.target.value})}
               />
               <Textarea
                 placeholder="Description"
+                className="min-h-[100px]"
                 value={ngoData.description}
                 onChange={(e) => setNgoData({...ngoData, description: e.target.value})}
               />
               <Input
                 placeholder="Location"
+                className="h-12"
                 value={ngoData.location}
                 onChange={(e) => setNgoData({...ngoData, location: e.target.value})}
               />
-              <Button type="submit" disabled={loading}>
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Find Grants
+              <Button type="submit" className="w-full h-12 bg-blue-600 hover:bg-blue-700" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Searching...
+                  </>
+                ) : (
+                  <>
+                    <Search className="mr-2 h-4 w-4" />
+                    Find Grants
+                  </>
+                )}
               </Button>
             </form>
           </CardContent>
         </Card>
-
-        {results.length > 0 && (
-          <div className="space-y-4">
-            {results.map((result, i) => (
-              <Card key={i}>
-                <CardContent className="p-4 space-y-3">
-                  <div className="font-medium">{result.text}</div>
-                  <div className="text-sm text-slate-500">
-                    Range: {result.approximateRange}
-                  </div>
-                  <div className="text-sm text-slate-500">
-                    Deadline: {result.deadline}
-                  </div>
-                  {result.url && (
-                    <Button variant="outline" size="sm" onClick={() => window.open(result.url, '_blank')}>
-                      View Grant <ExternalLink className="ml-2 h-4 w-4" />
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+   
+        <div className="lg:col-span-2">
+          <h2 className="text-2xl font-bold mb-6">Available <span className="text-blue-600">Grants</span></h2>
+          {results.length > 0 ? (
+            <div className="space-y-4">
+              {results.map((result, i) => (
+                <Card key={i} className="hover:shadow-lg transition-all">
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="font-medium text-lg">{result.text}</div>
+                      {result.isValid && (
+                        <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                          Highly Relevant
+                        </span>
+                      )}
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
+                      <div>Range: {result.approximateRange}</div>
+                      <div>Deadline: {result.deadline}</div>
+                    </div>
+                    {result.url && (
+                      <Button 
+                        variant="outline" 
+                        className="hover:bg-blue-50"
+                        onClick={() => window.open(result.url, '_blank')}
+                      >
+                        View Grant <ExternalLink className="ml-2 h-4 w-4" />
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Card className="bg-blue-50 border-none">
+              <CardContent className="p-12 text-center">
+                <Search className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-xl font-medium mb-2">No Grants Found Yet</h3>
+                <p className="text-gray-600">Update your organization profile and search for matching grants</p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     </div>
+   </div>
   );
 }
