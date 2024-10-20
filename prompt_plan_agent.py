@@ -10,6 +10,7 @@ from uagents import Agent, Context
 from uagents.setup import fund_agent_if_low
 from uagents import Model
 import google.generativeai as genai
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
 import re
@@ -36,8 +37,8 @@ def find_and_eval_lists(text):
 agent = Agent(
     name="PromptPlannerAgent",
     seed="gemini-planner",
-    port=8001,
-    endpoint="http://localhost:8001/plan",
+    port=8003,
+    endpoint="http://localhost:8003/plan",
 )
 genai.configure(api_key=gemini_api_key) 
 model = genai.GenerativeModel('gemini-1.5-flash')

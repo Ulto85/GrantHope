@@ -5,6 +5,7 @@ import requests
 from tavily import TavilyClient
 from dotenv import load_dotenv
 import os
+from fastapi.middleware.cors import CORSMiddleware
 load_dotenv()
 
 tavily_api_key=os.getenv("TAVILY_API_KEY")

@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 import os
 import re
 import ast
+from fastapi.middleware.cors import CORSMiddleware
 from bs4 import BeautifulSoup
 load_dotenv()
 import re
@@ -59,9 +60,10 @@ class Response(Model):
 agent = Agent(
     name="WebPageEvalAgent",
     seed="web-agent",
-    port=8001,
-    endpoint="http://localhost:8001/plan",
+    port=8002,
+    endpoint="http://localhost:8002/plan",
 )
+
 genai.configure(api_key=gemini_api_key) 
 model = genai.GenerativeModel('gemini-1.5-flash')
 
