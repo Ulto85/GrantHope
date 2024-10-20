@@ -33,7 +33,7 @@ const SAMPLE_GRANTS = [
    ];
 
 // Set this to true for demo mode
-const USE_SAMPLE_DATA = true;
+const USE_SAMPLE_DATA = false;
 
 export default function Dashboard() {
   const router = useRouter();
@@ -143,7 +143,7 @@ export default function Dashboard() {
       </nav>
    
       <div className="grid lg:grid-cols-3 gap-8">
-        <Card className="lg:col-span-1">
+        <Card className="lg:col-span-1 h-fit sticky top-8">
           <CardHeader>
             <div className="flex items-center gap-2">
               <Building2 className="text-blue-600 h-5 w-5" />
@@ -200,9 +200,11 @@ export default function Dashboard() {
         </Card>
    
         <div className="lg:col-span-2">
-          <h2 className="text-2xl font-bold mb-6">Available <span className="text-blue-600">Grants</span></h2>
+          <h2 className="text-2xl font-bold mb-6 sticky top-8 bg-gradient-to-b from-white to-blue-50 py-4">
+            Available <span className="text-blue-600">Grants</span>
+          </h2>
           {results.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-4 custom-scrollbar">
               {results.map((result, i) => (
                 <Card key={i} className="hover:shadow-lg transition-all">
                   <CardContent className="p-6">
