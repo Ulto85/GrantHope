@@ -8,26 +8,29 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { Heart, Building2, Search, ExternalLink, Loader2 } from 'lucide-react';
 // Sample data for demo purposes
-const SAMPLE_GRANTS = [
-  {
-    text: "The Rare Disease Foundation Research Grant",
-    approximateRange: "$50,000 - $100,000",
-    deadline: "Opens January 2025",
-    url: "https://example.com/grant1"
-  },
-  {
-    text: "Global Genes RARE Patient Impact Grant",
-    approximateRange: "$25,000 - $75,000",
-    deadline: "Opens March 2025",
-    url: "https://example.com/grant2"
-  },
-  {
-    text: "Chan Zuckerberg Initiative Rare Disease Research",
-    approximateRange: "$150,000 - $300,000",
-    deadline: "Rolling Applications",
-    url: "https://example.com/grant3"
-  }
-];
+const sampleResults = [
+    {
+      text: "VHL Research Grant Program - Offering support for innovative research projects focused on von Hippel-Lindau disease mechanisms, treatments, and potential cures.",
+      approximateRange: "$50,000 - $100,000",
+      deadline: "March 15, 2025",
+      isValid: true,
+      url: "https://example.com/vhl-research-grant"
+    },
+    {
+      text: "Rare Disease Treatment Innovation Grant - Supporting organizations working on rare genetic conditions including VHL syndrome.",
+      approximateRange: "$75,000 - $150,000",
+      deadline: "June 30, 2025",
+      isValid: true,
+      url: "https://example.com/rare-disease-grant"
+    },
+    {
+      text: "Patient Support Program Development Grant - Funding for nonprofits to establish or expand support services for VHL patients and families.",
+      approximateRange: "$25,000 - $50,000",
+      deadline: "September 1, 2025",
+      isValid: true,
+      url: "https://example.com/patient-support-grant"
+    }
+   ];
 
 // Set this to true for demo mode
 const USE_SAMPLE_DATA = true;
