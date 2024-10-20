@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { Heart, Building2, Search, ExternalLink, Loader2 } from 'lucide-react';
 // Sample data for demo purposes
-const sampleResults = [
+const SAMPLE_GRANTS = [
     {
       text: "VHL Research Grant Program - Offering support for innovative research projects focused on von Hippel-Lindau disease mechanisms, treatments, and potential cures.",
       approximateRange: "$50,000 - $100,000",
