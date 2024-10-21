@@ -1,3 +1,5 @@
+## [Devpost Link](https://devpost.com/software/granthope)
+
 ## Inspiration
 
 Rare disease nonprofits face a unique challenge - they need funding to support their vital missions, but often lack the resources to effectively search for grants. Through interactions advocacy groups, we witnessed firsthand how organizations spend countless hours manually searching for funding opportunities. This inspired us to create GrantHope, a platform that automates grant discovery and matching, allowing these organizations to focus on what truly matters - supporting their communities and advancing research.
